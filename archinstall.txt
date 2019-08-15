@@ -1,0 +1,31 @@
+# Make a minimal arch install for kernel development
+# with QEMU. Intentionally no commentary
+
+$ ip link
+$ timedatectl set-ntp true
+$ fdisk -l
+$ fdisk /dev/sda
+    # first partition
+    n
+    p
+    <enter>
+    <size+enter>
+    # second partition
+    n
+    p
+    <enter>
+    <size+enter>
+    w
+
+$ mkfs.ext4 /dev/sda1
+$ mkswap /dev/sda2
+$ swapon /dev/sda2
+$ mount /dev/sda1 /mnt
+$ mkdir /mnt/home
+$ pacstrap /mnt base base-devel
+$ genfstab -U /mnt >> /mnt/etc/fstab
+$ arch-chroot /mnt
+$ echo arch > /etc/hostname
+$ pacman -Syu dhcpcd
+$ exit
+$ exit
